@@ -1,7 +1,5 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
   <TreeTrunk />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
 </template>
 
 <script lang="ts">
@@ -12,7 +10,6 @@ import TreeTrunk from "./components/TreeTrunk.vue"
 export default defineComponent({
   name: "App",
   components: {
-    HelloWorld,
     TreeTrunk,
   },
 })

@@ -1,16 +1,37 @@
 <template>
-  <div>
-    my conjunction is {{ conjunction }} of type {{ typeof conjunction }}
+  <div class="node">
+    <div v-if="isAtom" class="node">
+      {{ value }}
+      <input
+        type="number"
+        :value="value"
+        @change="(e) => setValue(parseFloat(e.target.value) ?? 0)"
+      />
+      <button @click.stop="toggleAtomic">
+        <span v-if="isAtom">←◉→</span>
+        <span v-else>→○←</span>
+      </button>
+    </div>
+    <div v-else>
+      <div class="row">
+        <Mushroom :value="leftValue" :setValue="setLeftValue" />
+        <div class="node">
+          {{ value }}
+          <select v-model="conjunction">
+            <option :value="undefined"></option>
+            <option v-for="(operator, i) in operators" :key="i">{{
+              operator
+            }}</option>
+          </select>
+          <button @click.stop="toggleAtomic">
+            <span v-if="isAtom">←◉→</span>
+            <span v-else>→○←</span>
+          </button>
+        </div>
+        <Mushroom :value="rightValue" :setValue="setRightValue" />
+      </div>
+    </div>
   </div>
-  <select v-model="conjunction">
-    <option :value="undefined"></option>
-    <option v-for="(operator, i) in operators" :key="i">{{ operator }}</option>
-  </select>
-  <input
-    type="number"
-    :value="value"
-    @change="(e) => setValue(parseFloat(e.target.value) ?? 0)"
-  />
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue"
@@ -21,19 +42,52 @@ const operators: Operator[] = ["+", "-", "*", "/"]
 export default defineComponent({
   name: "Mushroom",
   props: {
-    value: Number,
-    setValue: Function,
+    value: { type: Number, required: true },
+    setValue: { type: Function, required: true },
   },
-  setup() {
-    // const left = ref<number | undefined>(undefined)
-    // const right = ref<number | undefined>(undefined)
-    // const computedValue = computed(() =>
-    //   left.value !== undefined && right.value !== undefined
-    //     ? left.value + right.value
-    //     : props.value
-    // )
+  setup(props) {
+    const isAtom = ref<boolean>(true)
+    const toggleAtomic = () => {
+      isAtom.value = !isAtom.value
+    }
+    const leftValue = ref<number>(props.value)
+    const rightValue = ref<number>(0)
+    const setLeftValue = (n: number) => {
+      console.log("hoa")
+      leftValue.value = n
+    }
+    const setRightValue = (n: number) => {
+      rightValue.value = n
+    }
     const conjunction = ref<Operator | undefined>(undefined)
-    return { conjunction, operators }
+    return {
+      conjunction,
+      operators,
+      isAtom,
+      toggleAtomic,
+      leftValue,
+      setLeftValue,
+      rightValue,
+      setRightValue,
+    }
   },
 })
 </script>
+<style scoped>
+.node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.row {
+  display: flex;
+}
+.row :nth-child(odd) {
+  margin-top: 1em;
+}
+button,
+select,
+input {
+  width: 60px;
+}
+</style>

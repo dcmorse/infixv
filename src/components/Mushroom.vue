@@ -13,8 +13,7 @@
         <Mushroom :value="leftValue" :setValue="setLeftValue" />
         <div class="node">
           {{ value }}
-          <select v-model="conjunction">
-            <option :value="undefined"></option>
+          <select v-model="conjunction" @change="bubbleValue">
             <option v-for="(operator, i) in operators" :key="i">{{
               operator
             }}</option>
@@ -89,6 +88,7 @@ export default defineComponent({
       rightValue,
       setRightValue,
       handleChange,
+      bubbleValue,
     }
   },
 })

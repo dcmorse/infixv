@@ -2,11 +2,7 @@
   <div class="node">
     <div v-if="isAtom" class="node">
       {{ value }}
-      <input
-        type="number"
-        :value="value"
-        @change="(e) => setValue(parseFloat(e.target.value) ?? 0)"
-      />
+      <input type="number" :value="value" @change="handleChange" />
       <button @click.stop="toggleAtomic">
         <span v-if="isAtom">←◉→</span>
         <span v-else>→○←</span>
@@ -50,16 +46,39 @@ export default defineComponent({
     const toggleAtomic = () => {
       isAtom.value = !isAtom.value
     }
+    const conjunction = ref<Operator>("+")
     const leftValue = ref<number>(props.value)
     const rightValue = ref<number>(0)
+    const handleChange = (event: any) => {
+      const value = parseFloat(event.target.value) ?? 0
+      props.setValue(value)
+      conjunction.value = "+"
+      leftValue.value = value
+      rightValue.value = 0
+    }
+    const bubbleValue = () => {
+      const l = leftValue.value
+      const r = rightValue.value
+      const set = (n: number) => props.setValue(n)
+      switch (conjunction.value) {
+        case "+":
+          return set(l + r)
+        case "-":
+          return set(l - r)
+        case "*":
+          return set(l * r)
+        case "/":
+          return set(l / r)
+      }
+    }
     const setLeftValue = (n: number) => {
-      console.log("hoa")
       leftValue.value = n
+      bubbleValue()
     }
     const setRightValue = (n: number) => {
       rightValue.value = n
+      bubbleValue()
     }
-    const conjunction = ref<Operator | undefined>(undefined)
     return {
       conjunction,
       operators,
@@ -69,6 +88,7 @@ export default defineComponent({
       setLeftValue,
       rightValue,
       setRightValue,
+      handleChange,
     }
   },
 })

@@ -10,7 +10,7 @@
     </div>
     <div v-else>
       <div class="row">
-        <Mushroom :value="leftValue" :setValue="setLeftValue" />
+        <TreeNode :value="leftValue" :setValue="setLeftValue" />
         <div class="node">
           {{ value }}
           <select v-model="conjunction" @change="bubbleValue">
@@ -23,7 +23,7 @@
             <span v-else>→○←</span>
           </button>
         </div>
-        <Mushroom :value="rightValue" :setValue="setRightValue" />
+        <TreeNode :value="rightValue" :setValue="setRightValue" />
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@ type Operator = "+" | "-" | "*" | "/"
 const operators: Operator[] = ["+", "-", "*", "/"]
 
 export default defineComponent({
-  name: "Mushroom",
+  name: "TreeNode",
   props: {
     value: { type: Number, required: true },
     setValue: { type: Function, required: true },

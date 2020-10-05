@@ -1,9 +1,9 @@
 <template>
-  <Mushroom :value="value" :setValue="setValue" />
+  <TreeNode :value="value" :setValue="setValue" />
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue"
-import Mushroom from "./Mushroom.vue"
+import TreeNode from "./TreeNode.vue"
 
 export default defineComponent({
   name: "TreeTrunk",
@@ -14,6 +14,6 @@ export default defineComponent({
     }
     return { value, setValue }
   },
-  components: { Mushroom },
+  components: { TreeNode },
 })
 </script>

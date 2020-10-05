@@ -1,5 +1,5 @@
 <template>
-  <TreeNode :value="value" :setValue="setValue" />
+  <TreeNode :value="value" :setValue="setValue" :isRoot="true" />
   <div class="equals">
     equals<br />
     <div class="total">{{ value }}</div>

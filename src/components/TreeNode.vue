@@ -1,6 +1,6 @@
 <template>
-  <div class="node">
-    <div v-if="isAtom" class="node">
+  <div class="column">
+    <div v-if="isAtom" class="column">
       {{ value }}
       <input type="number" :value="value" @change="handleChange" />
       <button @click.stop="toggleAtomic">
@@ -10,9 +10,10 @@
     </div>
     <div v-else>
       <div class="row">
+        <span v-if="!isRoot">(</span>
         <TreeNode :value="leftValue" :setValue="setLeftValue" />
-        <div class="node">
-          {{ value }}
+        <div class="column">
+          {{ conjunction }}
           <select v-model="conjunction" @change="bubbleValue">
             <option v-for="(operator, i) in operators" :key="i">{{
               operator
@@ -24,6 +25,7 @@
           </button>
         </div>
         <TreeNode :value="rightValue" :setValue="setRightValue" />
+        <span v-if="!isRoot">)</span>
       </div>
     </div>
   </div>
@@ -34,11 +36,20 @@ import { defineComponent, ref } from "vue"
 type Operator = "+" | "-" | "*" | "/"
 const operators: Operator[] = ["+", "-", "*", "/"]
 
+const parseNumberFromEvent = (event: Event) => {
+  if (event.target) {
+    const target = event.target as { value?: string }
+    return parseFloat(target.value || "0") ?? 0
+  } else {
+    return 0
+  }
+}
 export default defineComponent({
   name: "TreeNode",
   props: {
     value: { type: Number, required: true },
     setValue: { type: Function, required: true },
+    isRoot: { type: Boolean, required: false, default: false },
   },
   setup(props) {
     const isAtom = ref<boolean>(true)
@@ -48,9 +59,9 @@ export default defineComponent({
     const conjunction = ref<Operator>("+")
     const leftValue = ref<number>(props.value)
     const rightValue = ref<number>(0)
-    const handleChange = (event: any) => {
-      const value = parseFloat(event.target.value) ?? 0
-      props.setValue(value)
+    const handleChange = (event: Event) => {
+      const value = parseNumberFromEvent(event)
+      const target = props.setValue(value)
       conjunction.value = "+"
       leftValue.value = value
       rightValue.value = 0
@@ -94,7 +105,7 @@ export default defineComponent({
 })
 </script>
 <style scoped>
-.node {
+.column {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -102,12 +113,17 @@ export default defineComponent({
 .row {
   display: flex;
 }
-.row :nth-child(odd) {
-  margin-top: 1em;
-}
-button,
 select,
 input {
   width: 60px;
+  height: 30px;
+  box-sizing: border-box;
+}
+button {
+  font-size: smaller;
+  width: 60px;
+  height: 30px;
+  background: #0069ed;
+  color: #ffffff;
 }
 </style>

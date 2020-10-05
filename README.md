@@ -1,4 +1,8 @@
 # infixv
+An equation editor web page.
+But really a Vue 3 Coposition API learning project.
+
+![alt text](https://github.com/dcmorse/infixv/blob/master/screen-shot.png "screenshot of 100*(3+2)")
 
 ## Project setup
 ```

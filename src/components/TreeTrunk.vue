@@ -1,5 +1,9 @@
 <template>
   <TreeNode :value="value" :setValue="setValue" />
+  <div class="equals">
+    equals<br />
+    <div class="total">{{ value }}</div>
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref } from "vue"
@@ -17,3 +21,16 @@ export default defineComponent({
   components: { TreeNode },
 })
 </script>
+
+<style scoped>
+.equals {
+  margin-top: 20px;
+  font-size: 200%;
+  text-align: center;
+}
+
+.total {
+  margin-top: 20px;
+  font-size: 200%;
+}
+</style>

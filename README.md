@@ -2,6 +2,7 @@
 An equation editor web page.
 But really a Vue 3 Coposition API learning project.
 It lets you incrementally build a computation and see its value.
+
 ![](https://github.com/dcmorse/infixv/blob/main/screen-shot.png "screenshot of 100*(3+2)")
 
 ## Project setup
